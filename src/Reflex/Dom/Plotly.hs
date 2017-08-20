@@ -9,7 +9,6 @@ module Reflex.Dom.Plotly
   ) where
 
 import Control.Lens ((?~))
-import Control.Monad.IO.Class (MonadIO (..))
 import Data.Aeson (ToJSON, toJSON)
 import Data.Text (Text)
 import qualified GHCJS.DOM.Types as DOM
@@ -45,21 +44,21 @@ pie labels values = def & trace_type .~ Pie
 
 
 -----------------------------------------------------------------------------
-plotlyPlotStatic :: forall t m . (DomBuilder t m, MonadIO (Performable m)
+plotlyPlotStatic :: forall t m . (DomBuilder t m, DOM.MonadJSM (Performable m)
   , PerformEvent t m, PostBuild t m, Reflex t, TriggerEvent t m
   , DOM.IsGObject (RawElement (DomBuilderSpace m)))
   => [Trace] -> Layout -> m ()
 plotlyPlotStatic traces layout = plotlyPlotDef (pure traces) (pure layout)
 
 
-plotlyPlotDef :: forall t m . (DomBuilder t m, MonadIO (Performable m)
+plotlyPlotDef :: forall t m . (DomBuilder t m, DOM.MonadJSM (Performable m)
   , PerformEvent t m, PostBuild t m, Reflex t, TriggerEvent t m
   , DOM.IsGObject (RawElement (DomBuilderSpace m)))
   => Dynamic t [Trace] -> Dynamic t Layout -> m ()
 plotlyPlotDef = plotlyPlot Nothing
 
 
-plotlyPlot :: forall t m . (DomBuilder t m, MonadIO (Performable m)
+plotlyPlot :: forall t m . (DomBuilder t m, DOM.MonadJSM (Performable m)
   , PerformEvent t m, PostBuild t m, Reflex t, TriggerEvent t m
   , DOM.IsGObject (RawElement (DomBuilderSpace m)))
   => Maybe Config -> Dynamic t [Trace] -> Dynamic t Layout -> m ()

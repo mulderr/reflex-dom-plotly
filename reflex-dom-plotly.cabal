@@ -27,3 +27,7 @@ library
                      , lens
                      , reflex-dom
                      , text
+  if impl(ghcjs)
+    build-depends: ghcjs-base
+  else
+    build-depends: jsaddle
