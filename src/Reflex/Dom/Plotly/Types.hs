@@ -35,12 +35,12 @@ customToJSON
 
 
 ------------------------------------------------------------------------------
-data Color = ColorRGBA Int Int Int Int
+data Color = ColorRGBA Int Int Int Float
            | ColorRGB Int Int Int
 
 instance ToJSON Color where
   toJSON (ColorRGB r g b) = toJSON $ "rgb(" <> intercalate "," (fmap show [r, g, b]) <> ")"
-  toJSON (ColorRGBA r g b a) = toJSON $ "rgba(" <> intercalate "," (fmap show [r, g, b, a]) <> ")"
+  toJSON (ColorRGBA r g b a) = toJSON $ "rgba(" <> intercalate "," (fmap show [r, g, b] ++ [show a]) <> ")"
 
 
 ------------------------------------------------------------------------------
@@ -84,9 +84,13 @@ data Line
          , _line_simplify :: Maybe Bool
          } deriving Generic
 
+makeLenses ''Line
+
 instance ToJSON Line where
   toJSON = customToJSON
 
+instance Default Line where
+  def = Line Nothing Nothing Nothing Nothing Nothing Nothing
 
 ------------------------------------------------------------------------------
 data Trace
@@ -104,6 +108,7 @@ data Trace
           , _trace_text :: Maybe Text
           , _trace_mode :: Maybe (FlagList TraceMode)
           , _trace_hoveron :: Maybe (FlagList HoverOn)
+          , _trace_line :: Maybe Line
           } deriving Generic
 
 makeLenses ''Trace
@@ -112,7 +117,7 @@ instance ToJSON (Trace) where
   toJSON = customToJSON
 
 instance Default (Trace) where
-  def = Trace def Nothing Nothing Nothing Nothing Nothing Nothing Nothing Nothing Nothing Nothing Nothing Nothing Nothing
+  def = Trace def Nothing Nothing Nothing Nothing Nothing Nothing Nothing Nothing Nothing Nothing Nothing Nothing Nothing Nothing
 
 
 ------------------------------------------------------------------------------

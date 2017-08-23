@@ -17,6 +17,7 @@ library
   hs-source-dirs:      src
   js-sources:          lib/plotly-latest.min.js
   exposed-modules:     Reflex.Dom.Plotly
+                     , Reflex.Dom.Plotly.Colors
                      , Reflex.Dom.Plotly.Internal.JavaScript
                      , Reflex.Dom.Plotly.Types
   build-depends:       base >=4.9 && <4.11
